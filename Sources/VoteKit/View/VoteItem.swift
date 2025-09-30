@@ -80,6 +80,7 @@ class VoteItem: UIView {
         self.titleColor = titleColor
         self.title = title
         super.init(frame: .zero)
+        setViewConstraint()
         self.addSubview(voteStackView)
         voteStackView.fixInView(self)
         voteStackView.addArrangedSubview(radioButton)
@@ -92,6 +93,23 @@ class VoteItem: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    public func setViewConstraint() {
+        let width = UIScreen.main.bounds.width - 100
+        var height = title.heightWithConstrainedWidth(width: width,
+                                                      font: font)
+        height += 16
+        self.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint(
+            item: self,
+            attribute: .height,
+            relatedBy: .greaterThanOrEqual,
+            toItem: nil,
+            attribute: .notAnAttribute,
+            multiplier: 1,
+            constant: height).isActive = true
+    }
+    
     public func setTitleViewConstraint() {
         let width = UIScreen.main.bounds.width - 100
         var height = title.heightWithConstrainedWidth(width: width,

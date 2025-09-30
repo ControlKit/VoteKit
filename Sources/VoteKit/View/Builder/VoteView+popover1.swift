@@ -269,7 +269,7 @@ public class VoteView_Popover1: UIView, VoteViewProtocol {
         NSLayoutConstraint(
             item: questionView,
             attribute: .height,
-            relatedBy: .greaterThanOrEqual,
+            relatedBy: .equal,
             toItem: nil,
             attribute: .notAnAttribute,
             multiplier: 1,
