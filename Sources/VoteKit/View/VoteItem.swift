@@ -98,7 +98,6 @@ class VoteItem: UIView {
         let width = UIScreen.main.bounds.width - paddingWidth
         var height = title.heightWithConstrainedWidth(width: width,
                                                       font: font)
-        height += 16
         self.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint(
             item: self,

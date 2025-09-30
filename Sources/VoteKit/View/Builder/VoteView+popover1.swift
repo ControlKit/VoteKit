@@ -376,7 +376,7 @@ public class VoteView_Popover1: UIView, VoteViewProtocol {
             toItem: popupView,
             attribute: .bottom,
             multiplier: 1,
-            constant: 28).isActive = true
+            constant: -30).isActive = true
         NSLayoutConstraint(
             item: submitButton,
             attribute: .width,
@@ -384,7 +384,7 @@ public class VoteView_Popover1: UIView, VoteViewProtocol {
             toItem: nil,
             attribute: NSLayoutConstraint.Attribute.notAnAttribute,
             multiplier: 1,
-            constant: 222).isActive = true
+            constant: 193).isActive = true
         NSLayoutConstraint(
             item: submitButton,
             attribute: .height,
@@ -392,7 +392,7 @@ public class VoteView_Popover1: UIView, VoteViewProtocol {
             toItem: nil,
             attribute: .notAnAttribute,
             multiplier: 1,
-            constant: 56).isActive = true
+            constant: 52).isActive = true
     }
 }
 
