@@ -151,7 +151,7 @@ public class VoteView_Popover1: UIView, VoteViewProtocol {
     }
     
     public func setPopupViewConstraint() {
-        let width = UIScreen.main.bounds.width - 90
+//        let width = UIScreen.main.bounds.width - 90
         popupView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint(
             item: popupView,

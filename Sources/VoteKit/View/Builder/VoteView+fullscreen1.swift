@@ -11,14 +11,52 @@ import UIKit
 public protocol VoteDelegate: AnyObject {
     func dismiss()
 }
-
 public class VoteView_FullScreen1: UIView, VoteViewProtocol {
     var config: VoteViewConfig
     var viewModel: VoteViewModel
-    
     weak public var delegate: VoteDelegate?
+    lazy var contentView: UIView = {
+        let contentView = UIView()
+        contentView.backgroundColor = config.contentViewBackColor
+        contentView.alpha = config.contentViewAlpha
+        return contentView
+    }()
     
-    lazy var button: UIButton = {
+    lazy var popupView: UIView = {
+        let popupView = UIView()
+        popupView.backgroundColor = config.popupViewBackColor
+        popupView.setCurvedView(cornerRadius: config.popupViewCornerRadius)
+        return popupView
+    }()
+    
+    lazy var headerTitle: UILabel = {
+        let headerTitle = UILabel()
+        headerTitle.font = config.titleFont
+        headerTitle.text = config.title
+        headerTitle.textColor = config.titleColor
+        headerTitle.textAlignment = .left
+        headerTitle.numberOfLines = 0
+        return headerTitle
+    }()
+    
+    lazy var questionView: UIView = {
+        let popupView = UIView()
+        popupView.backgroundColor = config.questionViewBackColor
+        popupView.setCurvedView(cornerRadius: config.questionViewCornerRadius)
+        return popupView
+    }()
+    
+    lazy var voteStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.backgroundColor = .clear
+        stackView.axis = .vertical
+        stackView.alignment = .fill
+        stackView.distribution = .fillEqually
+        stackView.spacing = 1
+        return stackView
+    }()
+    
+    lazy var submitButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = config.buttonBackColor
         button.titleLabel?.textColor = config.buttonTitleColor
@@ -26,7 +64,7 @@ public class VoteView_FullScreen1: UIView, VoteViewProtocol {
         button.setCurvedView(cornerRadius: config.buttonCornerRadius,
                              borderWidth: config.buttonBorderWidth,
                              borderColor: config.buttonBorderColor)
-        button.addTarget(self, action: #selector(openLink), for: .touchUpInside)
+        button.addTarget(self, action: #selector(submitButtonTapped), for: .touchUpInside)
         button.titleLabel?.font = config.buttonFont
         button.setTitleColor(config.buttonTitleColor, for: .normal)
         return button
@@ -38,55 +76,12 @@ public class VoteView_FullScreen1: UIView, VoteViewProtocol {
                                   image: config.closeButtonImage)
         closeButton.setImage(img, for: .normal)
         closeButton.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-        closeButton.addTarget(self, action: #selector(dismiss), for: .touchUpInside)
+        closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
         return closeButton
-    }()
-    
-    lazy var contentView: UIView = {
-        let contentView = UIView()
-        contentView.backgroundColor = config.contentViewBackColor
-        return contentView
-    }()
-    
-    lazy var contentBackGroundImageView: UIImageView = {
-        let contentBackGroundImageView = UIImageView()
-        contentBackGroundImageView.image = config.contentBackGroundImage
-        return contentBackGroundImageView
-    }()
-    
-    lazy var iconImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
-        setIcon(color: config.imageColor,
-                image: config.image,
-                imageType: config.imageType,
-                imageView: imageView)
-        return imageView
-    }()
-    
-    lazy var headerTitle: UILabel = {
-        let headerTitle = UILabel()
-        headerTitle.font = config.titleFont
-        headerTitle.text = config.title
-        headerTitle.textColor = config.titleColor
-        headerTitle.textAlignment = .center
-        headerTitle.numberOfLines = 0
-        return headerTitle
-    }()
-    
-    lazy var descriptionLabel: UILabel = {
-        let descriptionLabel = UILabel()
-        descriptionLabel.font = config.descriptionFont
-        descriptionLabel.text = config.descriptionText
-        descriptionLabel.textColor = config.descriptionTextColor
-        descriptionLabel.textAlignment = .center
-        descriptionLabel.numberOfLines = 0
-        return descriptionLabel
     }()
     
     public override func layoutSubviews() {
         super.layoutSubviews()
-        contentView.setCurvedView(cornerRadius: 20)
     }
     
     public required init(viewModel: VoteViewModel,
@@ -102,43 +97,67 @@ public class VoteView_FullScreen1: UIView, VoteViewProtocol {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func commonInit() {
-        contentView.fixInView(self)
-    }
-    
     public func setup() {
         addSubview(contentView)
         contentView.fixInView(self)
-        contentView.addSubview(contentBackGroundImageView)
-        contentBackGroundImageView.fixInView(contentView)
-        contentView.addSubview(iconImageView)
-        contentView.addSubview(closeButton)
-        contentView.addSubview(button)
-        contentView.addSubview(headerTitle)
-        contentView.addSubview(descriptionLabel)
-        commonInit()
-        setUpdateImageViewConstraint()
+        contentView.addSubview(popupView)
+        popupView.addSubview(headerTitle)
+        popupView.addSubview(questionView)
+        questionView.addSubview(voteStackView)
+        popupView.addSubview(closeButton)
+        popupView.addSubview(submitButton)
+        setPopupViewConstraint()
         setTitleViewConstraint()
-        setDescriptionConstraint()
-        setButtonConstraint()
+        setSubmitButtonConstraint()
         setCloseButtonConstraint()
+        addVotesToStackView()
+    }
+    func addVotesToStackView() {
+        guard let voteOptions = viewModel.response.data?.vote_options else {
+            return
+        }
+        voteStackView.addArrangedSubview(getVoteQuestion(config.question))
+        for voteOption in voteOptions {
+            voteStackView.addArrangedSubview(getVoteOption(voteOption))
+        }
+    }
+    func getVoteQuestion(_ q: String) -> UILabel {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.font = config.questionFont
+        label.text = config.question
+        label.textColor = config.questionColor
+        label.textAlignment = .left
+        return label
+    }
+    func getVoteOption(_ voteOption: VoteOption) -> VoteItem {
+        let item = VoteItem(
+            vote: voteOption,
+            font: config.voteItemFont,
+            titleColor: config.voteItemColor,
+            title: VoteViewPresenter(
+                data: nil,
+                config: config
+            ).getLocalizeString(voteOption.title ?? []) ?? ""
+        )
+        return item
     }
     
     @objc
-    func openLink() {
-        viewModel.openLink()
+    func submitButtonTapped() {
         delegate?.dismiss()
     }
     
     @objc
-    func dismiss() {
+    func closeButtonTapped() {
         delegate?.dismiss()
     }
     
-    public func setUpdateImageViewConstraint() {
-        iconImageView.translatesAutoresizingMaskIntoConstraints = false
+    public func setPopupViewConstraint() {
+//        let width = UIScreen.main.bounds.width - 90
+        popupView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint(
-            item: iconImageView,
+            item: popupView,
             attribute: .centerX,
             relatedBy: .equal,
             toItem: contentView,
@@ -146,29 +165,27 @@ public class VoteView_FullScreen1: UIView, VoteViewProtocol {
             multiplier: 1,
             constant: 0).isActive = true
         NSLayoutConstraint(
-            item: iconImageView,
-            attribute: .bottom,
+            item: popupView,
+            attribute: .centerY,
             relatedBy: .equal,
-            toItem: headerTitle,
-            attribute: .top,
+            toItem: contentView,
+            attribute: .centerY,
             multiplier: 1,
-            constant: -70).isActive = true
+            constant: 0).isActive = true
+        popupView.leadingAnchor.constraint(
+            equalTo: contentView.leadingAnchor,
+            constant: 24).isActive = true
+        popupView.trailingAnchor.constraint(
+            equalTo: contentView.trailingAnchor,
+            constant: -24).isActive = true
         NSLayoutConstraint(
-            item: iconImageView,
-            attribute: .width,
-            relatedBy: .equal,
-            toItem: nil,
-            attribute: NSLayoutConstraint.Attribute.notAnAttribute,
-            multiplier: 1,
-            constant: 191).isActive = true
-        NSLayoutConstraint(
-            item: iconImageView,
+            item: popupView,
             attribute: .height,
-            relatedBy: .equal,
+            relatedBy: .greaterThanOrEqual,
             toItem: nil,
             attribute: .notAnAttribute,
             multiplier: 1,
-            constant: 139).isActive = true
+            constant: 384).isActive = true
     }
     
     public func setTitleViewConstraint() {
@@ -177,22 +194,25 @@ public class VoteView_FullScreen1: UIView, VoteViewProtocol {
             item: headerTitle,
             attribute: .centerX,
             relatedBy: .equal,
-            toItem: contentView,
+            toItem: popupView,
             attribute: .centerX,
             multiplier: 1,
             constant: 0).isActive = true
         NSLayoutConstraint(
             item: headerTitle,
-            attribute: .bottom,
-            relatedBy: .equal,
-            toItem: descriptionLabel,
             attribute: .top,
+            relatedBy: .equal,
+            toItem: popupView,
+            attribute: .bottom,
             multiplier: 1,
-            constant: -16).isActive = true
+            constant: 60).isActive = true
         
         headerTitle.leadingAnchor.constraint(
-            equalTo: contentView.leadingAnchor,
-            constant: 24).isActive = true
+            equalTo: popupView.leadingAnchor,
+            constant: 28).isActive = true
+        headerTitle.trailingAnchor.constraint(
+            equalTo: popupView.trailingAnchor,
+            constant: -28).isActive = true
         
         NSLayoutConstraint(
             item: headerTitle,
@@ -204,59 +224,98 @@ public class VoteView_FullScreen1: UIView, VoteViewProtocol {
             constant: 30).isActive = true
     }
     
-    public func setDescriptionConstraint() {
-        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+    public func setQuestionViewConstraint() {
+        questionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint(
-            item: descriptionLabel,
+            item: questionView,
             attribute: .centerX,
             relatedBy: .equal,
-            toItem: contentView,
+            toItem: popupView,
             attribute: .centerX,
             multiplier: 1,
             constant: 0).isActive = true
         NSLayoutConstraint(
-            item: descriptionLabel,
+            item: questionView,
             attribute: .top,
             relatedBy: .equal,
-            toItem: contentView,
-            attribute: .centerY,
+            toItem: headerTitle,
+            attribute: .bottom,
             multiplier: 1,
-            constant: 0).isActive = true
+            constant: 33).isActive = true
         
-        descriptionLabel.leadingAnchor.constraint(
-            equalTo: contentView.leadingAnchor,
-            constant: 24).isActive = true
+        questionView.leadingAnchor.constraint(
+            equalTo: popupView.leadingAnchor,
+            constant: 14).isActive = true
+        questionView.trailingAnchor.constraint(
+            equalTo: popupView.trailingAnchor,
+            constant: -14).isActive = true
         
         NSLayoutConstraint(
-            item: descriptionLabel,
+            item: questionView,
             attribute: .height,
             relatedBy: .greaterThanOrEqual,
             toItem: nil,
             attribute: .notAnAttribute,
             multiplier: 1,
-            constant: 50).isActive = true
+            constant: 210).isActive = true
     }
     
-    public func setButtonConstraint() {
-        button.translatesAutoresizingMaskIntoConstraints = false
+    public func setCloseButtonConstraint() {
+        closeButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint(
-            item: button,
+            item: closeButton,
+            attribute: .right,
+            relatedBy: .equal,
+            toItem: popupView,
+            attribute: .right,
+            multiplier: 1,
+            constant: -8).isActive = true
+        NSLayoutConstraint(
+            item: closeButton,
+            attribute: .top,
+            relatedBy: .equal,
+            toItem: popupView,
+            attribute: .top,
+            multiplier: 1,
+            constant: 8).isActive = true
+        NSLayoutConstraint(
+            item: closeButton,
+            attribute: .width,
+            relatedBy: .equal,
+            toItem: nil,
+            attribute: .notAnAttribute,
+            multiplier: 1,
+            constant: 40).isActive = true
+        NSLayoutConstraint(
+            item: closeButton,
+            attribute: .height,
+            relatedBy: .equal,
+            toItem: nil,
+            attribute: .notAnAttribute,
+            multiplier: 1,
+            constant: 40).isActive = true
+    }
+    
+    public func setSubmitButtonConstraint() {
+        submitButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint(
+            item: submitButton,
             attribute: .centerX,
             relatedBy: .equal,
-            toItem: contentView,
+            toItem: popupView,
             attribute: .centerX,
             multiplier: 1,
             constant: 0).isActive = true
         NSLayoutConstraint(
-            item: button,
+            item: submitButton,
             attribute: .bottom,
             relatedBy: .equal,
-            toItem: contentView,
+            toItem: popupView,
             attribute: .bottom,
             multiplier: 1,
-            constant: -60).isActive = true
+            constant: 28).isActive = true
         NSLayoutConstraint(
-            item: button,
+            item: submitButton,
             attribute: .width,
             relatedBy: .equal,
             toItem: nil,
@@ -264,7 +323,7 @@ public class VoteView_FullScreen1: UIView, VoteViewProtocol {
             multiplier: 1,
             constant: 222).isActive = true
         NSLayoutConstraint(
-            item: button,
+            item: submitButton,
             attribute: .height,
             relatedBy: .equal,
             toItem: nil,
@@ -272,50 +331,17 @@ public class VoteView_FullScreen1: UIView, VoteViewProtocol {
             multiplier: 1,
             constant: 56).isActive = true
     }
-    
-    public func setCloseButtonConstraint() {
-        closeButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint(
-            item: closeButton,
-            attribute: .left,
-            relatedBy: .equal,
-            toItem: contentView,
-            attribute: .left,
-            multiplier: 1,
-            constant: 16).isActive = true
-        NSLayoutConstraint(
-            item: closeButton,
-            attribute: .top,
-            relatedBy: .equal,
-            toItem: contentView,
-            attribute: .top,
-            multiplier: 1,
-            constant: 48).isActive = true
-        NSLayoutConstraint(
-            item: closeButton,
-            attribute: .width,
-            relatedBy: .equal,
-            toItem: nil,
-            attribute: .notAnAttribute,
-            multiplier: 1,
-            constant: 40).isActive = true
-        NSLayoutConstraint(
-            item: closeButton,
-            attribute: .height,
-            relatedBy: .equal,
-            toItem: nil,
-            attribute: .notAnAttribute,
-            multiplier: 1,
-            constant: 40).isActive = true
-    }
 }
 
 public class FullScreen1VoteViewConfig: VoteViewConfig {
     public override init(lang: String) {
         super.init(lang: lang)
-        style = .fullscreen1
+        style = .popover1
+        contentViewBackColor = .white
+        popupViewBackColor = UIColor(r: 216, g: 235, b: 227)
     }
 }
+
 
 class ImageHelper {
     static var resolvedBundle: Bundle {

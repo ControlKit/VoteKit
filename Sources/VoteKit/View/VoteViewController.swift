@@ -25,7 +25,7 @@ class VoteViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let VoteView = VoteViewStyle.make(viewModel: viewModel,
-                                                        config: config.viewConfig)
+                                          config: config.viewConfig)
         view.addSubview(VoteView)
         VoteView.delegate = self
         VoteView.fixInView(view)
