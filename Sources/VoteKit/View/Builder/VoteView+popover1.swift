@@ -138,12 +138,16 @@ public class VoteView_Popover1: UIView, VoteViewProtocol {
             vote: voteOption,
             font: config.voteItemFont,
             titleColor: config.voteItemColor,
-            title: VoteViewPresenter(
-                data: nil,
-                config: config
-            ).getLocalizeString(voteOption.title ?? []) ?? ""
+            title: getOptionTitle(voteOption)
         )
         return item
+    }
+    
+    func getOptionTitle(_ voteOption: VoteOption) -> String {
+        return VoteViewPresenter(
+            data: nil,
+            config: config
+        ).getLocalizeString(voteOption.title ?? []) ?? ""
     }
     
     @objc
@@ -160,9 +164,9 @@ public class VoteView_Popover1: UIView, VoteViewProtocol {
         let width = UIScreen.main.bounds.width - paddingWidth
         var height = config.question.heightWithConstrainedWidth(width: width,
                                                                 font: config.questionFont)
-        for option in viewModel.response.data?.vote_options ?? [] {
-            height += config.question.heightWithConstrainedWidth(width: width,
-                                                                 font: config.voteItemFont)
+        for voteOption in viewModel.response.data?.vote_options ?? [] {
+            height += getOptionTitle(voteOption).heightWithConstrainedWidth(width: width,
+                                                                            font: config.voteItemFont)
         }
         return height
     }
@@ -196,7 +200,7 @@ public class VoteView_Popover1: UIView, VoteViewProtocol {
         NSLayoutConstraint(
             item: popupView,
             attribute: .height,
-            relatedBy: .greaterThanOrEqual,
+            relatedBy: .equal,
             toItem: nil,
             attribute: .notAnAttribute,
             multiplier: 1,
