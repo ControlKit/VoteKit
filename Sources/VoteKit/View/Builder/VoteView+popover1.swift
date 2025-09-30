@@ -306,15 +306,9 @@ public class VoteView_Popover1: UIView, VoteViewProtocol {
             attribute: .centerX,
             multiplier: 1,
             constant: 0).isActive = true
-        label.leadingAnchor.constraint(
-            equalTo: voteStackView.leadingAnchor,
-            constant: 16).isActive = true
-        label.trailingAnchor.constraint(
-            equalTo: voteStackView.trailingAnchor,
-            constant: -16).isActive = true
         
         NSLayoutConstraint(
-            item: headerTitle,
+            item: label,
             attribute: .height,
             relatedBy: .equal,
             toItem: nil,
