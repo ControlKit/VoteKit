@@ -81,7 +81,7 @@ class VoteItem: UIView {
         self.title = title
         super.init(frame: .zero)
         self.addSubview(voteStackView)
-        voteStackView.fixInView(self)
+        setVoteViewConstraint()
         voteStackView.addArrangedSubview(radioButton)
         voteStackView.addArrangedSubview(titleLabel)
         setTitleViewConstraint()
@@ -91,6 +91,21 @@ class VoteItem: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    public func setVoteViewConstraint() {
+        voteStackView.translatesAutoresizingMaskIntoConstraints = false
+        voteStackView.leadingAnchor.constraint(
+            equalTo: self.leadingAnchor,
+            constant: 16).isActive = true
+        voteStackView.trailingAnchor.constraint(
+            equalTo: self.trailingAnchor,
+            constant: -16).isActive = true
+        voteStackView.topAnchor.constraint(
+            equalTo: self.topAnchor,
+            constant: 16).isActive = true
+        voteStackView.bottomAnchor.constraint(
+            equalTo: self.bottomAnchor,
+            constant: -16).isActive = true
     }
     public func setTitleViewConstraint() {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
