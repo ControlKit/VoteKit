@@ -21,7 +21,10 @@ public class VoteKit: Votable {
             guard let response = try await self.getVote(request: request) else {
                 return
             }
-            let viewModel = DefaultVoteViewModel(response: response)
+            let viewModel = DefaultVoteViewModel(
+                serviceConfig: config,
+                response: response
+            )
             let vc = VoteViewController(
                 viewModel: viewModel,
                 config: config

@@ -163,7 +163,7 @@ public class VoteView_Popover1: UIView, VoteViewProtocol, RadioButtonDelegate {
     
     @objc
     func submitButtonTapped() {
-        delegate?.dismiss()
+        delegate?.submit()
     }
     
     @objc

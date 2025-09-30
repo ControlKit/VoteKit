@@ -33,6 +33,13 @@ class VoteViewController: UIViewController {
 }
 
 extension VoteViewController: VoteDelegate {
+    func submit() {
+        if let vote = viewModel.selectedVoteOption {
+            viewModel.setVote()
+            dismiss(animated: true)
+        }
+    }
+    
     func dismiss() {
         self.dismiss(animated: true)
     }

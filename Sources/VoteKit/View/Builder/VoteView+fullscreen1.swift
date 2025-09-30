@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 public protocol VoteDelegate: AnyObject {
+    func submit()
     func dismiss()
 }
 public class VoteView_FullScreen1: UIView, VoteViewProtocol {
