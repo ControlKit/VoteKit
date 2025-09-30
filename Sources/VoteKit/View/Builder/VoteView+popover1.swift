@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 
+let paddingWidth = 150.0
 public class VoteView_Popover1: UIView, VoteViewProtocol {
     var config: VoteViewConfig
     var viewModel: VoteViewModel
@@ -156,7 +157,7 @@ public class VoteView_Popover1: UIView, VoteViewProtocol {
     }
     
     func getHeigth() -> CGFloat {
-        let width = UIScreen.main.bounds.width - 140
+        let width = UIScreen.main.bounds.width - paddingWidth
         var height = config.question.heightWithConstrainedWidth(width: width,
                                                                 font: config.questionFont)
         for option in viewModel.response.data?.vote_options ?? [] {
@@ -293,7 +294,7 @@ public class VoteView_Popover1: UIView, VoteViewProtocol {
     }
     
     public func setQuestionLabelConstraint(_ label: UILabel) {
-        let width = UIScreen.main.bounds.width - 140
+        let width = UIScreen.main.bounds.width - paddingWidth
         let height = config.question.heightWithConstrainedWidth(width: width,
                                                                 font: config.questionFont)
         label.translatesAutoresizingMaskIntoConstraints = false
