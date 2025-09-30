@@ -93,6 +93,9 @@ class VoteItem: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     public func setTitleViewConstraint() {
+        let width = UIScreen.main.bounds.width - 100
+        var height = title.heightWithConstrainedWidth(width: width,
+                                                      font: font)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint(
             item: titleLabel,
@@ -101,7 +104,7 @@ class VoteItem: UIView {
             toItem: nil,
             attribute: .notAnAttribute,
             multiplier: 1,
-            constant: 30).isActive = true
+            constant: height).isActive = true
     }
     public func setRadioButtonConstraint() {
         radioButton.translatesAutoresizingMaskIntoConstraints = false
