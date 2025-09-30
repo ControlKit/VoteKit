@@ -60,8 +60,9 @@ class VoteItem: UIView {
         headerTitle.textColor = titleColor
         headerTitle.textAlignment = .left
         headerTitle.numberOfLines = 0
-        let gesture = UITapGestureRecognizer(target: self, action: #selector(radioButtonTapped))
-        headerTitle.addGestureRecognizer(gesture)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
+        headerTitle.addGestureRecognizer(tap)
+        headerTitle.isUserInteractionEnabled = true
         return headerTitle
     }()
     lazy var radioButton: UIButton = {
@@ -162,6 +163,12 @@ class VoteItem: UIView {
     
     @objc
     func radioButtonTapped(_ sender: UIButton) {
+        isSelected = true
+        delegate?.radioButtonTapped(vote: vote)
+    }
+    
+    @objc
+    func handleTap(_ sender: UITapGestureRecognizer) {
         isSelected = true
         delegate?.radioButtonTapped(vote: vote)
     }
