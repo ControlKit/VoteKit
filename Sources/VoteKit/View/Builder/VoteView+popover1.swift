@@ -299,10 +299,10 @@ public class VoteView_Popover1: UIView, VoteViewProtocol {
             constant: -16).isActive = true
         voteStackView.topAnchor.constraint(
             equalTo: questionView.topAnchor,
-            constant: 30).isActive = true
+            constant: 16).isActive = true
         voteStackView.bottomAnchor.constraint(
             equalTo: questionView.bottomAnchor,
-            constant: -30).isActive = true
+            constant: -16).isActive = true
     }
     
     public func setCloseButtonConstraint() {
