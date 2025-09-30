@@ -21,7 +21,7 @@ public struct VoteModel: Codable {
     public let accept_button_title: VoteLocalString?
     public let cancel_button_title: VoteLocalString?
     public let vote_options: [VoteOption]
-    public let sdk_version: Int?
+    public let sdk_version: String?
     public let created_at: String?
 }
 public struct VoteLocalizedText: Codable {
