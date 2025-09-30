@@ -146,6 +146,7 @@ public class VoteView_Popover1: UIView, VoteViewProtocol, RadioButtonDelegate {
     }
     
     func radioButtonTapped(vote: VoteOption) {
+        viewModel.selectedVoteOption = vote
         for voteItem in voteStackView.subviews {
             if let voteItem = voteItem as? VoteItem, voteItem.vote.id != vote.id {
                 voteItem.isSelected = false
