@@ -169,7 +169,7 @@ public class VoteView_Popover1: UIView, VoteViewProtocol {
     
     public func setPopupViewConstraint() {
         var height = getHeigth()
-        height += 256
+        height += 300
         popupView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint(
             item: popupView,
