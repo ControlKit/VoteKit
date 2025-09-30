@@ -10,7 +10,7 @@ import UIKit
 
 let paddingWidth = 140.0
 let paddingHeight = 10.0
-public class VoteView_Popover1: UIView, VoteViewProtocol {
+public class VoteView_Popover1: UIView, VoteViewProtocol, RadioButtonDelegate {
     var config: VoteViewConfig
     var viewModel: VoteViewModel
     weak public var delegate: VoteDelegate?
@@ -122,6 +122,7 @@ public class VoteView_Popover1: UIView, VoteViewProtocol {
         setQuestionLabelConstraint(questionLabel)
         for voteOption in voteOptions {
             let voteOptionView = getVoteOption(voteOption)
+            voteOptionView.delegate = self
             voteStackView.addArrangedSubview(voteOptionView)
         }
     }
@@ -142,6 +143,14 @@ public class VoteView_Popover1: UIView, VoteViewProtocol {
             title: getOptionTitle(voteOption)
         )
         return item
+    }
+    
+    func radioButtonTapped(vote: VoteOption) {
+        for voteItem in voteStackView.subviews {
+            if let voteItem = voteItem as? VoteItem, voteItem.vote.id != vote.id {
+                voteItem.isSelected = false
+            }
+        }
     }
     
     func getOptionTitle(_ voteOption: VoteOption) -> String {
