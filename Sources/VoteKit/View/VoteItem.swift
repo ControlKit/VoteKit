@@ -45,7 +45,7 @@ class VoteItem: UIView {
         stackView.axis = .horizontal
         stackView.alignment = .leading
         stackView.distribution = .fillProportionally
-        stackView.spacing = 1
+        stackView.spacing = 8
         return stackView
     }()
     
@@ -96,21 +96,6 @@ class VoteItem: UIView {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint(
             item: titleLabel,
-            attribute: .top,
-            relatedBy: .equal,
-            toItem: voteStackView,
-            attribute: .top,
-            multiplier: 1,
-            constant: 4).isActive = true
-        titleLabel.leadingAnchor.constraint(
-            equalTo: voteStackView.leadingAnchor,
-            constant: 8).isActive = true
-        titleLabel.trailingAnchor.constraint(
-            equalTo: voteStackView.trailingAnchor,
-            constant: -8).isActive = true
-        
-        NSLayoutConstraint(
-            item: titleLabel,
             attribute: .height,
             relatedBy: .greaterThanOrEqual,
             toItem: nil,
@@ -122,19 +107,12 @@ class VoteItem: UIView {
         radioButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint(
             item: radioButton,
-            attribute: .top,
+            attribute: .centerY,
             relatedBy: .equal,
             toItem: voteStackView,
-            attribute: .top,
+            attribute: .centerY,
             multiplier: 1,
-            constant: 4).isActive = true
-        radioButton.leadingAnchor.constraint(
-            equalTo: voteStackView.leadingAnchor,
-            constant: 8).isActive = true
-        radioButton.trailingAnchor.constraint(
-            equalTo: voteStackView.trailingAnchor,
-            constant: -8).isActive = true
-        
+            constant: 0).isActive = true
         NSLayoutConstraint(
             item: radioButton,
             attribute: .height,
