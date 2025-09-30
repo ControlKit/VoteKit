@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 let paddingWidth = 140.0
+let paddingHeight = 10.0
 public class VoteView_Popover1: UIView, VoteViewProtocol {
     var config: VoteViewConfig
     var viewModel: VoteViewModel
@@ -166,7 +167,7 @@ public class VoteView_Popover1: UIView, VoteViewProtocol {
                                                                 font: config.questionFont)
         for voteOption in viewModel.response.data?.vote_options ?? [] {
             height += getOptionTitle(voteOption).heightWithConstrainedWidth(width: width,
-                                                                            font: config.voteItemFont) + 10
+                                                                            font: config.voteItemFont) + paddingHeight
         }
         return height
     }
@@ -314,7 +315,7 @@ public class VoteView_Popover1: UIView, VoteViewProtocol {
         NSLayoutConstraint(
             item: label,
             attribute: .height,
-            relatedBy: .equal,
+            relatedBy: .greaterThanOrEqual,
             toItem: nil,
             attribute: .notAnAttribute,
             multiplier: 1,
