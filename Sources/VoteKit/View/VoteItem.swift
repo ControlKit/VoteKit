@@ -5,7 +5,11 @@
 //  Created by Maziar Saadatfar on 9/28/25.
 //
 import UIKit
+protocol RadioButtonDelegate: AnyObject {
+    func radioButtonTapped(vote: VoteOption)
+}
 class VoteItem: UIView {
+    weak var delegate: RadioButtonDelegate?
     public var vote: VoteOption {
         didSet {
             setNeedsDisplay()
@@ -56,6 +60,8 @@ class VoteItem: UIView {
         headerTitle.textColor = titleColor
         headerTitle.textAlignment = .left
         headerTitle.numberOfLines = 0
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(radioButtonTapped))
+        headerTitle.addGestureRecognizer(gesture)
         return headerTitle
     }()
     lazy var radioButton: UIButton = {
@@ -64,6 +70,7 @@ class VoteItem: UIView {
         button.setTitle("", for: .normal)
         let img = isSelected ? ImageHelper.image("selected") : ImageHelper.image("unselected")
         button.setImage(img, for: .normal)
+        button.addTarget(self, action: #selector(radioButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -151,5 +158,11 @@ class VoteItem: UIView {
             attribute: .notAnAttribute,
             multiplier: 1,
             constant: 16).isActive = true
+    }
+    
+    @objc
+    func radioButtonTapped(_ sender: UIButton) {
+        isSelected = true
+        delegate?.radioButtonTapped(vote: vote)
     }
 }
