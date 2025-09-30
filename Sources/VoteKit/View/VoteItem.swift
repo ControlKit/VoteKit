@@ -97,7 +97,7 @@ class VoteItem: UIView {
     public func setViewConstraint() {
         let width = UIScreen.main.bounds.width - paddingWidth
         var height = title.heightWithConstrainedWidth(width: width,
-                                                      font: font)
+                                                      font: font) + 10
         height = height > 30 ? 30 : height
         self.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint(
@@ -113,7 +113,7 @@ class VoteItem: UIView {
     public func setTitleViewConstraint() {
         let width = UIScreen.main.bounds.width - paddingWidth
         var height = title.heightWithConstrainedWidth(width: width,
-                                                      font: font)
+                                                      font: font) + 10
         height = height > 30 ? 30 : height
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint(

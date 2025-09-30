@@ -166,7 +166,7 @@ public class VoteView_Popover1: UIView, VoteViewProtocol {
                                                                 font: config.questionFont)
         for voteOption in viewModel.response.data?.vote_options ?? [] {
             height += getOptionTitle(voteOption).heightWithConstrainedWidth(width: width,
-                                                                            font: config.voteItemFont)
+                                                                            font: config.voteItemFont) + 10
         }
         return height
     }
