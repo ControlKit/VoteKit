@@ -200,7 +200,7 @@ public class VoteView_Popover1: UIView, VoteViewProtocol {
         NSLayoutConstraint(
             item: popupView,
             attribute: .height,
-            relatedBy: .equal,
+            relatedBy: .greaterThanOrEqual,
             toItem: nil,
             attribute: .notAnAttribute,
             multiplier: 1,

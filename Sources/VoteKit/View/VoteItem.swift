@@ -119,7 +119,7 @@ class VoteItem: UIView {
         NSLayoutConstraint(
             item: titleLabel,
             attribute: .height,
-            relatedBy: .equal,
+            relatedBy: .greaterThanOrEqual,
             toItem: nil,
             attribute: .notAnAttribute,
             multiplier: 1,
