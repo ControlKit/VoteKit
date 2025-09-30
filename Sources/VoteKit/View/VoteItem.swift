@@ -81,7 +81,8 @@ class VoteItem: UIView {
         self.title = title
         super.init(frame: .zero)
         self.addSubview(voteStackView)
-        setVoteViewConstraint()
+        voteStackView.fixInView(self)
+//        setVoteViewConstraint()
         voteStackView.addArrangedSubview(radioButton)
         voteStackView.addArrangedSubview(titleLabel)
         setTitleViewConstraint()

@@ -101,12 +101,12 @@ public class VoteView_Popover1: UIView, VoteViewProtocol {
         popupView.addSubview(headerTitle)
         popupView.addSubview(questionView)
         questionView.addSubview(voteStackView)
-        voteStackView.fixInView(questionView)
         popupView.addSubview(closeButton)
         popupView.addSubview(submitButton)
         setPopupViewConstraint()
         setTitleViewConstraint()
         setQuestionViewConstraint()
+        setVoteStackViewConstraint()
         setSubmitButtonConstraint()
         setCloseButtonConstraint()
         addVotesToStackView()
@@ -115,7 +115,9 @@ public class VoteView_Popover1: UIView, VoteViewProtocol {
         guard let voteOptions = viewModel.response.data?.vote_options else {
             return
         }
-        voteStackView.addArrangedSubview(getVoteQuestion(config.question))
+        let questionLabel = getVoteQuestion(config.question)
+        voteStackView.addArrangedSubview(questionLabel)
+        setQuestionLabelConstraint(questionLabel)
         for voteOption in voteOptions {
             let voteOptionView = getVoteOption(voteOption)
             voteStackView.addArrangedSubview(voteOptionView)
@@ -260,6 +262,33 @@ public class VoteView_Popover1: UIView, VoteViewProtocol {
             constant: 210).isActive = true
     }
     
+    public func setQuestionLabelConstraint(_ label: UILabel) {
+        label.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint(
+            item: label,
+            attribute: .centerX,
+            relatedBy: .equal,
+            toItem: voteStackView,
+            attribute: .centerX,
+            multiplier: 1,
+            constant: 0).isActive = true
+        label.leadingAnchor.constraint(
+            equalTo: voteStackView.leadingAnchor,
+            constant: 16).isActive = true
+        label.trailingAnchor.constraint(
+            equalTo: voteStackView.trailingAnchor,
+            constant: -16).isActive = true
+        
+        NSLayoutConstraint(
+            item: headerTitle,
+            attribute: .height,
+            relatedBy: .greaterThanOrEqual,
+            toItem: nil,
+            attribute: .notAnAttribute,
+            multiplier: 1,
+            constant: 30).isActive = true
+    }
+    
     public func setVoteStackViewConstraint() {
         voteStackView.translatesAutoresizingMaskIntoConstraints = false
         voteStackView.leadingAnchor.constraint(
@@ -270,10 +299,10 @@ public class VoteView_Popover1: UIView, VoteViewProtocol {
             constant: -16).isActive = true
         voteStackView.topAnchor.constraint(
             equalTo: questionView.topAnchor,
-            constant: 16).isActive = true
+            constant: 30).isActive = true
         voteStackView.bottomAnchor.constraint(
             equalTo: questionView.bottomAnchor,
-            constant: -16).isActive = true
+            constant: -30).isActive = true
     }
     
     public func setCloseButtonConstraint() {
