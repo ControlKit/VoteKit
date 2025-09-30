@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-let paddingWidth = 150.0
+let paddingWidth = 140.0
 public class VoteView_Popover1: UIView, VoteViewProtocol {
     var config: VoteViewConfig
     var viewModel: VoteViewModel
