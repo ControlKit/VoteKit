@@ -205,7 +205,7 @@ public class VoteView_FullScreen1: UIView, VoteViewProtocol, RadioButtonDelegate
             toItem: popupView,
             attribute: .top,
             multiplier: 1,
-            constant: 80).isActive = true
+            constant: 130).isActive = true
         
         headerTitle.leadingAnchor.constraint(
             equalTo: popupView.leadingAnchor,
@@ -386,7 +386,7 @@ public class FullScreen1VoteViewConfig: VoteViewConfig {
         buttonFont = UIFont.systemFont(ofSize: 18, weight: .semibold)
         closeButtonBorderWidth = 1.0
         popupViewBackColor = .white
-        questionViewBackColor = .white
+        questionViewBackColor = UIColor(r: 243, g: 243, b: 243)
     }
 }
 
