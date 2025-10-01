@@ -407,5 +407,7 @@ public class Popover2VoteViewConfig: VoteViewConfig {
         closeButtonFont = UIFont.systemFont(ofSize: 18, weight: .semibold)
         buttonFont = UIFont.systemFont(ofSize: 18, weight: .semibold)
         closeButtonBorderWidth = 1.0
+        popupViewBackColor = UIColor(r: 243, g: 243, b: 243)
+        questionViewBackColor = .white
     }
 }
