@@ -353,7 +353,7 @@ public class VoteView_Popover2: UIView, VoteViewProtocol, RadioButtonDelegate {
             toItem: nil,
             attribute: NSLayoutConstraint.Attribute.notAnAttribute,
             multiplier: 1,
-            constant: 178).isActive = true
+            constant: 150).isActive = true
         NSLayoutConstraint(
             item: closeButton,
             attribute: .height,
@@ -384,7 +384,7 @@ public class VoteView_Popover2: UIView, VoteViewProtocol, RadioButtonDelegate {
             toItem: nil,
             attribute: NSLayoutConstraint.Attribute.notAnAttribute,
             multiplier: 1,
-            constant: 178).isActive = true
+            constant: 150).isActive = true
         NSLayoutConstraint(
             item: submitButton,
             attribute: .height,
