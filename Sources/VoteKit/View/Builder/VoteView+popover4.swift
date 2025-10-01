@@ -373,12 +373,12 @@ public class VoteView_Popover4: UIView, VoteViewProtocol, RadioButtonDelegate {
             constant: 0).isActive = true
         NSLayoutConstraint(
             item: submitButton,
-            attribute: .bottom,
+            attribute: .top,
             relatedBy: .equal,
-            toItem: popupView,
+            toItem: questionView,
             attribute: .bottom,
             multiplier: 1,
-            constant: -30).isActive = true
+            constant: 30).isActive = true
         NSLayoutConstraint(
             item: submitButton,
             attribute: .width,
