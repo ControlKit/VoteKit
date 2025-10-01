@@ -68,10 +68,14 @@ public class VoteView_Popover4: UIView, VoteViewProtocol, RadioButtonDelegate {
     
     lazy var closeButton: UIButton = {
         let closeButton = UIButton()
-        let img = closeButtonIcon(color: config.closeButtonImageColor,
-                                  image: config.closeButtonImage)
-        closeButton.setImage(img, for: .normal)
-        closeButton.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        closeButton.backgroundColor = config.closeButtonBackColor
+        closeButton.titleLabel?.textColor = config.closeButtonTitleColor
+        closeButton.setTitle(config.closeButtonNormalTitle, for: .normal)
+        closeButton.setCurvedView(cornerRadius: config.closeButtonCornerRadius,
+                                  borderWidth: config.closeButtonBorderWidth,
+                                  borderColor: config.closeButtonBorderColor)
+        closeButton.titleLabel?.font = config.closeButtonFont
+        closeButton.setTitleColor(config.closeButtonTitleColor, for: .normal)
         closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
         return closeButton
     }()
@@ -325,28 +329,28 @@ public class VoteView_Popover4: UIView, VoteViewProtocol, RadioButtonDelegate {
         closeButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint(
             item: closeButton,
-            attribute: .right,
+            attribute: .centerX,
             relatedBy: .equal,
             toItem: popupView,
-            attribute: .right,
+            attribute: .centerX,
             multiplier: 1,
-            constant: -8).isActive = true
+            constant: 0).isActive = true
         NSLayoutConstraint(
             item: closeButton,
             attribute: .top,
             relatedBy: .equal,
-            toItem: popupView,
-            attribute: .top,
+            toItem: submitButton,
+            attribute: .bottom,
             multiplier: 1,
-            constant: 8).isActive = true
+            constant: 16).isActive = true
         NSLayoutConstraint(
             item: closeButton,
             attribute: .width,
             relatedBy: .equal,
             toItem: nil,
-            attribute: .notAnAttribute,
+            attribute: NSLayoutConstraint.Attribute.notAnAttribute,
             multiplier: 1,
-            constant: 40).isActive = true
+            constant: 178).isActive = true
         NSLayoutConstraint(
             item: closeButton,
             attribute: .height,
@@ -354,7 +358,7 @@ public class VoteView_Popover4: UIView, VoteViewProtocol, RadioButtonDelegate {
             toItem: nil,
             attribute: .notAnAttribute,
             multiplier: 1,
-            constant: 40).isActive = true
+            constant: 42).isActive = true
     }
     
     public func setSubmitButtonConstraint() {
@@ -382,7 +386,7 @@ public class VoteView_Popover4: UIView, VoteViewProtocol, RadioButtonDelegate {
             toItem: nil,
             attribute: NSLayoutConstraint.Attribute.notAnAttribute,
             multiplier: 1,
-            constant: 193).isActive = true
+            constant: 178).isActive = true
         NSLayoutConstraint(
             item: submitButton,
             attribute: .height,
@@ -390,7 +394,7 @@ public class VoteView_Popover4: UIView, VoteViewProtocol, RadioButtonDelegate {
             toItem: nil,
             attribute: .notAnAttribute,
             multiplier: 1,
-            constant: 52).isActive = true
+            constant: 42).isActive = true
     }
 }
 
