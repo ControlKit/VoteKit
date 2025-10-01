@@ -7,7 +7,7 @@
 
 import Foundation
 import UIKit
-public class VoteView_Popover4: UIView, VoteViewProtocol {
+public class VoteView_Popover4: UIView, VoteViewProtocol, RadioButtonDelegate {
     var config: VoteViewConfig
     var viewModel: VoteViewModel
     weak public var delegate: VoteDelegate?
@@ -47,7 +47,7 @@ public class VoteView_Popover4: UIView, VoteViewProtocol {
         stackView.backgroundColor = .clear
         stackView.axis = .vertical
         stackView.alignment = .fill
-        stackView.distribution = .fillEqually
+        stackView.distribution = .fillProportionally
         stackView.spacing = 1
         return stackView
     }()
@@ -85,7 +85,7 @@ public class VoteView_Popover4: UIView, VoteViewProtocol {
         self.config = config
         self.viewModel = viewModel
         self.config = VoteViewPresenter(data: viewModel.response.data, config: self.config).config
-        super.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+        super.init(frame: .zero)
         setup()
     }
     
@@ -104,6 +104,8 @@ public class VoteView_Popover4: UIView, VoteViewProtocol {
         popupView.addSubview(submitButton)
         setPopupViewConstraint()
         setTitleViewConstraint()
+        setQuestionViewConstraint()
+        setVoteStackViewConstraint()
         setSubmitButtonConstraint()
         setCloseButtonConstraint()
         addVotesToStackView()
@@ -112,9 +114,13 @@ public class VoteView_Popover4: UIView, VoteViewProtocol {
         guard let voteOptions = viewModel.response.data?.vote_options else {
             return
         }
-        voteStackView.addArrangedSubview(getVoteQuestion(config.question))
+        let questionLabel = getVoteQuestion(config.question)
+        voteStackView.addArrangedSubview(questionLabel)
+        setQuestionLabelConstraint(questionLabel)
         for voteOption in voteOptions {
-            voteStackView.addArrangedSubview(getVoteOption(voteOption))
+            let voteOptionView = getVoteOption(voteOption)
+            voteOptionView.delegate = self
+            voteStackView.addArrangedSubview(voteOptionView)
         }
     }
     func getVoteQuestion(_ q: String) -> UILabel {
@@ -131,17 +137,30 @@ public class VoteView_Popover4: UIView, VoteViewProtocol {
             vote: voteOption,
             font: config.voteItemFont,
             titleColor: config.voteItemColor,
-            title: VoteViewPresenter(
-                data: nil,
-                config: config
-            ).getLocalizeString(voteOption.title ?? []) ?? ""
+            title: getOptionTitle(voteOption)
         )
         return item
     }
     
+    func radioButtonTapped(vote: VoteOption) {
+        viewModel.selectedVoteOption = vote
+        for voteItem in voteStackView.subviews {
+            if let voteItem = voteItem as? VoteItem, voteItem.vote.id != vote.id {
+                voteItem.isSelected = false
+            }
+        }
+    }
+    
+    func getOptionTitle(_ voteOption: VoteOption) -> String {
+        return VoteViewPresenter(
+            data: nil,
+            config: config
+        ).getLocalizeString(voteOption.title ?? []) ?? ""
+    }
+    
     @objc
     func submitButtonTapped() {
-        delegate?.dismiss()
+        delegate?.submit()
     }
     
     @objc
@@ -149,8 +168,20 @@ public class VoteView_Popover4: UIView, VoteViewProtocol {
         delegate?.dismiss()
     }
     
+    func getHeigth() -> CGFloat {
+        let width = UIScreen.main.bounds.width - paddingWidth
+        var height = config.question.heightWithConstrainedWidth(width: width,
+                                                                font: config.questionFont)
+        for voteOption in viewModel.response.data?.vote_options ?? [] {
+            height += getOptionTitle(voteOption).heightWithConstrainedWidth(width: width,
+                                                                            font: config.voteItemFont) + paddingHeight
+        }
+        return height
+    }
+    
     public func setPopupViewConstraint() {
-//        let width = UIScreen.main.bounds.width - 90
+        var height = getHeigth()
+        height += 300
         popupView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint(
             item: popupView,
@@ -181,7 +212,7 @@ public class VoteView_Popover4: UIView, VoteViewProtocol {
             toItem: nil,
             attribute: .notAnAttribute,
             multiplier: 1,
-            constant: 384).isActive = true
+            constant: height).isActive = true
     }
     
     public func setTitleViewConstraint() {
@@ -199,7 +230,7 @@ public class VoteView_Popover4: UIView, VoteViewProtocol {
             attribute: .top,
             relatedBy: .equal,
             toItem: popupView,
-            attribute: .bottom,
+            attribute: .top,
             multiplier: 1,
             constant: 60).isActive = true
         
@@ -221,6 +252,8 @@ public class VoteView_Popover4: UIView, VoteViewProtocol {
     }
     
     public func setQuestionViewConstraint() {
+        var height = getHeigth()
+        height += 50
         questionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint(
             item: questionView,
@@ -249,11 +282,51 @@ public class VoteView_Popover4: UIView, VoteViewProtocol {
         NSLayoutConstraint(
             item: questionView,
             attribute: .height,
+            relatedBy: .equal,
+            toItem: nil,
+            attribute: .notAnAttribute,
+            multiplier: 1,
+            constant: height).isActive = true
+    }
+    
+    public func setVoteStackViewConstraint() {
+        voteStackView.translatesAutoresizingMaskIntoConstraints = false
+        voteStackView.leadingAnchor.constraint(
+            equalTo: questionView.leadingAnchor,
+            constant: 16).isActive = true
+        voteStackView.trailingAnchor.constraint(
+            equalTo: questionView.trailingAnchor,
+            constant: -16).isActive = true
+        voteStackView.topAnchor.constraint(
+            equalTo: questionView.topAnchor,
+            constant: 16).isActive = true
+        voteStackView.bottomAnchor.constraint(
+            equalTo: questionView.bottomAnchor,
+            constant: -16).isActive = true
+    }
+    
+    public func setQuestionLabelConstraint(_ label: UILabel) {
+        let width = UIScreen.main.bounds.width - paddingWidth
+        let height = config.question.heightWithConstrainedWidth(width: width,
+                                                                font: config.questionFont)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint(
+            item: label,
+            attribute: .centerX,
+            relatedBy: .equal,
+            toItem: voteStackView,
+            attribute: .centerX,
+            multiplier: 1,
+            constant: 0).isActive = true
+        
+        NSLayoutConstraint(
+            item: label,
+            attribute: .height,
             relatedBy: .greaterThanOrEqual,
             toItem: nil,
             attribute: .notAnAttribute,
             multiplier: 1,
-            constant: 210).isActive = true
+            constant: height).isActive = true
     }
     
     public func setCloseButtonConstraint() {
@@ -309,7 +382,7 @@ public class VoteView_Popover4: UIView, VoteViewProtocol {
             toItem: popupView,
             attribute: .bottom,
             multiplier: 1,
-            constant: 28).isActive = true
+            constant: -30).isActive = true
         NSLayoutConstraint(
             item: submitButton,
             attribute: .width,
@@ -317,7 +390,7 @@ public class VoteView_Popover4: UIView, VoteViewProtocol {
             toItem: nil,
             attribute: NSLayoutConstraint.Attribute.notAnAttribute,
             multiplier: 1,
-            constant: 222).isActive = true
+            constant: 193).isActive = true
         NSLayoutConstraint(
             item: submitButton,
             attribute: .height,
@@ -325,15 +398,13 @@ public class VoteView_Popover4: UIView, VoteViewProtocol {
             toItem: nil,
             attribute: .notAnAttribute,
             multiplier: 1,
-            constant: 56).isActive = true
+            constant: 52).isActive = true
     }
 }
 
 public class Popover4VoteViewConfig: VoteViewConfig {
     public override init(lang: String) {
         super.init(lang: lang)
-        style = .popover1
-        contentViewBackColor = .white
-        popupViewBackColor = UIColor(r: 216, g: 235, b: 227)
+        style = .popover4
     }
 }
