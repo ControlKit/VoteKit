@@ -185,7 +185,7 @@ public class VoteView_Popover3: UIView, VoteViewProtocol, RadioButtonDelegate {
     
     public func setPopupViewConstraint() {
         var height = getHeigth()
-        height += 300
+        height += 330
         popupView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint(
             item: popupView,

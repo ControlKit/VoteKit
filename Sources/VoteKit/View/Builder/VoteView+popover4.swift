@@ -181,30 +181,22 @@ public class VoteView_Popover4: UIView, VoteViewProtocol, RadioButtonDelegate {
     
     public func setPopupViewConstraint() {
         var height = getHeigth()
-        height += 300
+        height += 330
         popupView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint(
             item: popupView,
-            attribute: .centerX,
+            attribute: .bottom,
             relatedBy: .equal,
             toItem: contentView,
-            attribute: .centerX,
-            multiplier: 1,
-            constant: 0).isActive = true
-        NSLayoutConstraint(
-            item: popupView,
-            attribute: .centerY,
-            relatedBy: .equal,
-            toItem: contentView,
-            attribute: .centerY,
+            attribute: .bottom,
             multiplier: 1,
             constant: 0).isActive = true
         popupView.leadingAnchor.constraint(
             equalTo: contentView.leadingAnchor,
-            constant: 24).isActive = true
+            constant: 0).isActive = true
         popupView.trailingAnchor.constraint(
             equalTo: contentView.trailingAnchor,
-            constant: -24).isActive = true
+            constant: 0).isActive = true
         NSLayoutConstraint(
             item: popupView,
             attribute: .height,
@@ -406,5 +398,14 @@ public class Popover4VoteViewConfig: VoteViewConfig {
     public override init(lang: String) {
         super.init(lang: lang)
         style = .popover4
+        buttonTitleColor = .black
+        buttonBackColor = UIColor(r: 255, g: 199, b: 0)
+        closeButtonBorderColor = UIColor(r: 255, g: 199, b: 0)
+        closeButtonTitleColor = UIColor(r: 167, g: 167, b: 167)
+        closeButtonFont = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        buttonFont = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        closeButtonBorderWidth = 1.0
+        popupViewBackColor = UIColor(r: 243, g: 243, b: 243)
+        questionViewBackColor = .white
     }
 }
