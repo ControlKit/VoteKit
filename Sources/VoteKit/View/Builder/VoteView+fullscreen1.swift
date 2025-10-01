@@ -205,7 +205,7 @@ public class VoteView_FullScreen1: UIView, VoteViewProtocol, RadioButtonDelegate
             toItem: popupView,
             attribute: .top,
             multiplier: 1,
-            constant: 130).isActive = true
+            constant: 100).isActive = true
         
         headerTitle.leadingAnchor.constraint(
             equalTo: popupView.leadingAnchor,
@@ -238,12 +238,12 @@ public class VoteView_FullScreen1: UIView, VoteViewProtocol, RadioButtonDelegate
             constant: 0).isActive = true
         NSLayoutConstraint(
             item: questionView,
-            attribute: .centerY,
+            attribute: .top,
             relatedBy: .equal,
-            toItem: popupView,
-            attribute: .centerY,
+            toItem: headerTitle,
+            attribute: .bottom,
             multiplier: 1,
-            constant: 0).isActive = true
+            constant: 50).isActive = true
         questionView.leadingAnchor.constraint(
             equalTo: popupView.leadingAnchor,
             constant: 14).isActive = true
