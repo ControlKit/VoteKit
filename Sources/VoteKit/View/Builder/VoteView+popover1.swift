@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 let paddingWidth = 140.0
-let paddingHeight = 30.0
+let paddingHeight = 10.0
 public class VoteView_Popover1: UIView, VoteViewProtocol, RadioButtonDelegate {
     var config: VoteViewConfig
     var viewModel: VoteViewModel
