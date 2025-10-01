@@ -73,10 +73,14 @@ public class VoteView_FullScreen1: UIView, VoteViewProtocol, RadioButtonDelegate
     
     lazy var closeButton: UIButton = {
         let closeButton = UIButton()
-        let img = closeButtonIcon(color: config.closeButtonImageColor,
-                                  image: config.closeButtonImage)
-        closeButton.setImage(img, for: .normal)
-        closeButton.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        closeButton.backgroundColor = config.closeButtonBackColor
+        closeButton.titleLabel?.textColor = config.closeButtonTitleColor
+        closeButton.setTitle(config.closeButtonNormalTitle, for: .normal)
+        closeButton.setCurvedView(cornerRadius: config.closeButtonCornerRadius,
+                                  borderWidth: config.closeButtonBorderWidth,
+                                  borderColor: config.closeButtonBorderColor)
+        closeButton.titleLabel?.font = config.closeButtonFont
+        closeButton.setTitleColor(config.closeButtonTitleColor, for: .normal)
         closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
         return closeButton
     }()
@@ -107,7 +111,7 @@ public class VoteView_FullScreen1: UIView, VoteViewProtocol, RadioButtonDelegate
         questionView.addSubview(voteStackView)
         popupView.addSubview(closeButton)
         popupView.addSubview(submitButton)
-        setPopupViewConstraint()
+        popupView.fixInView(contentView)
         setTitleViewConstraint()
         setQuestionViewConstraint()
         setVoteStackViewConstraint()
@@ -184,42 +188,6 @@ public class VoteView_FullScreen1: UIView, VoteViewProtocol, RadioButtonDelegate
         return height
     }
     
-    public func setPopupViewConstraint() {
-        var height = getHeigth()
-        height += 300
-        popupView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint(
-            item: popupView,
-            attribute: .centerX,
-            relatedBy: .equal,
-            toItem: contentView,
-            attribute: .centerX,
-            multiplier: 1,
-            constant: 0).isActive = true
-        NSLayoutConstraint(
-            item: popupView,
-            attribute: .centerY,
-            relatedBy: .equal,
-            toItem: contentView,
-            attribute: .centerY,
-            multiplier: 1,
-            constant: 0).isActive = true
-        popupView.leadingAnchor.constraint(
-            equalTo: contentView.leadingAnchor,
-            constant: 24).isActive = true
-        popupView.trailingAnchor.constraint(
-            equalTo: contentView.trailingAnchor,
-            constant: -24).isActive = true
-        NSLayoutConstraint(
-            item: popupView,
-            attribute: .height,
-            relatedBy: .greaterThanOrEqual,
-            toItem: nil,
-            attribute: .notAnAttribute,
-            multiplier: 1,
-            constant: height).isActive = true
-    }
-    
     public func setTitleViewConstraint() {
         headerTitle.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint(
@@ -237,7 +205,7 @@ public class VoteView_FullScreen1: UIView, VoteViewProtocol, RadioButtonDelegate
             toItem: popupView,
             attribute: .top,
             multiplier: 1,
-            constant: 60).isActive = true
+            constant: 80).isActive = true
         
         headerTitle.leadingAnchor.constraint(
             equalTo: popupView.leadingAnchor,
@@ -270,13 +238,12 @@ public class VoteView_FullScreen1: UIView, VoteViewProtocol, RadioButtonDelegate
             constant: 0).isActive = true
         NSLayoutConstraint(
             item: questionView,
-            attribute: .top,
+            attribute: .centerY,
             relatedBy: .equal,
-            toItem: headerTitle,
-            attribute: .bottom,
+            toItem: popupView,
+            attribute: .centerY,
             multiplier: 1,
-            constant: 33).isActive = true
-        
+            constant: 0).isActive = true
         questionView.leadingAnchor.constraint(
             equalTo: popupView.leadingAnchor,
             constant: 14).isActive = true
@@ -338,28 +305,28 @@ public class VoteView_FullScreen1: UIView, VoteViewProtocol, RadioButtonDelegate
         closeButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint(
             item: closeButton,
-            attribute: .right,
+            attribute: .centerX,
             relatedBy: .equal,
             toItem: popupView,
-            attribute: .right,
+            attribute: .centerX,
             multiplier: 1,
-            constant: -8).isActive = true
+            constant: 0).isActive = true
         NSLayoutConstraint(
             item: closeButton,
-            attribute: .top,
+            attribute: .bottom,
             relatedBy: .equal,
             toItem: popupView,
-            attribute: .top,
+            attribute: .bottom,
             multiplier: 1,
-            constant: 8).isActive = true
+            constant: -50).isActive = true
         NSLayoutConstraint(
             item: closeButton,
             attribute: .width,
             relatedBy: .equal,
             toItem: nil,
-            attribute: .notAnAttribute,
+            attribute: NSLayoutConstraint.Attribute.notAnAttribute,
             multiplier: 1,
-            constant: 40).isActive = true
+            constant: 320).isActive = true
         NSLayoutConstraint(
             item: closeButton,
             attribute: .height,
@@ -367,7 +334,7 @@ public class VoteView_FullScreen1: UIView, VoteViewProtocol, RadioButtonDelegate
             toItem: nil,
             attribute: .notAnAttribute,
             multiplier: 1,
-            constant: 40).isActive = true
+            constant: 42).isActive = true
     }
     
     public func setSubmitButtonConstraint() {
@@ -384,10 +351,10 @@ public class VoteView_FullScreen1: UIView, VoteViewProtocol, RadioButtonDelegate
             item: submitButton,
             attribute: .bottom,
             relatedBy: .equal,
-            toItem: popupView,
-            attribute: .bottom,
+            toItem: closeButton,
+            attribute: .top,
             multiplier: 1,
-            constant: -30).isActive = true
+            constant: -24).isActive = true
         NSLayoutConstraint(
             item: submitButton,
             attribute: .width,
@@ -395,7 +362,7 @@ public class VoteView_FullScreen1: UIView, VoteViewProtocol, RadioButtonDelegate
             toItem: nil,
             attribute: NSLayoutConstraint.Attribute.notAnAttribute,
             multiplier: 1,
-            constant: 193).isActive = true
+            constant: 320).isActive = true
         NSLayoutConstraint(
             item: submitButton,
             attribute: .height,
@@ -403,7 +370,7 @@ public class VoteView_FullScreen1: UIView, VoteViewProtocol, RadioButtonDelegate
             toItem: nil,
             attribute: .notAnAttribute,
             multiplier: 1,
-            constant: 52).isActive = true
+            constant: 42).isActive = true
     }
 }
 
@@ -411,6 +378,15 @@ public class FullScreen1VoteViewConfig: VoteViewConfig {
     public override init(lang: String) {
         super.init(lang: lang)
         style = .fullscreen1
+        buttonTitleColor = .white
+        buttonBackColor = .black
+        closeButtonBorderColor = .black
+        closeButtonTitleColor = .black
+        closeButtonFont = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        buttonFont = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        closeButtonBorderWidth = 1.0
+        popupViewBackColor = .white
+        questionViewBackColor = .white
     }
 }
 
