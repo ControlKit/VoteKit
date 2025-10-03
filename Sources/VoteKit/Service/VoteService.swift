@@ -55,19 +55,21 @@ public class VoteService: VoteServiceProtocol {
             )
             let (data, res) = try await URLSession.shared.data(for: req)
             if (res as? HTTPURLResponse)?.statusCode == 204 {
+                print("Vote Response --> 204")
                 return nil
             }
             req.httpMethod = "POST"
             req.httpBody = try JSONEncoder().encode(request.params)
             if let response = try? JSONDecoder().decode(SubmitVoteResponse.self, from: data) {
+                print("Vote Response --> 200")
                 print(response)
                 return response
             } else {
-                print("Invalid Response")
+                print("Vote Response --> Decode Error")
                 return nil
             }
         } catch {
-            print("Failed to Send POST Request \(error)")
+            print("Failed to Vote Request \(error)")
             return nil
         }
     }
