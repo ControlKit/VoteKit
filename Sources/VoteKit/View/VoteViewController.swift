@@ -29,18 +29,21 @@ class VoteViewController: UIViewController {
         view.addSubview(VoteView)
         VoteView.delegate = self
         VoteView.fixInView(view)
+        viewModel.setAction(.view)
     }
 }
 
 extension VoteViewController: VoteDelegate {
     func submit() {
-        if let vote = viewModel.selectedVoteOption {
+        if (viewModel.selectedVoteOption) != nil {
             viewModel.setVote()
+            viewModel.setAction(.submit)
             dismiss(animated: true)
         }
     }
     
     func dismiss() {
+        viewModel.setAction(.cancel)
         self.dismiss(animated: true)
     }
 }

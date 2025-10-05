@@ -8,7 +8,7 @@
 import Foundation
 
 public protocol Votable: AnyObject {
-    var voteService: VoteServiceProtocol! { get }
+    var voteService: VoteServiceProtocol { get }
     func getVote(request: VoteRequest) async throws -> VoteResponse?
     func setVote(request: SubmitVoteRequest) async throws -> SubmitVoteResponse?
 }

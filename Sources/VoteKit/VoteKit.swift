@@ -6,7 +6,7 @@ import Combine
 
 public let voteKit_Version: String = "1.0.0"
 public class VoteKit: Votable {
-    public let voteService: VoteServiceProtocol!
+    public let voteService: VoteServiceProtocol
     public init(voteService: VoteServiceProtocol = VoteService()) {
         self.voteService = voteService
     }

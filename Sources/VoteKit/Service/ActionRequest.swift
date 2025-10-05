@@ -6,7 +6,7 @@
 //
 import Foundation
 public struct ActionRequest {
-    public var appId: String = Bundle.main.bundleIdentifier ?? String()
+    public var appId: String
     public var voteId: String
     public var action: VoteAction
     public var route: String = "https://tauri.ir/api/votes/"
@@ -31,5 +31,6 @@ public struct ActionRequest {
 public enum VoteAction: String {
     case view = "VIEW"
     case submit = "SUBMIT"
+    case cancel = "CANCEL"
 }
   
