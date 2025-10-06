@@ -8,10 +8,10 @@
 import Foundation
 import UIKit
 public class VoteViewConfig {
-    public init(lang: String) {
+    public init(lang: CKLanguage) {
         self.lang = lang
     }
-    public let lang: String
+    public let lang: CKLanguage
     public var style: VoteViewStyle = .fullscreen1
     
     public var contentViewBackColor: UIColor = UIColor(r: 0, g: 0, b: 0, a: 0.8)

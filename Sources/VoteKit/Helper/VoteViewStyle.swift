@@ -35,7 +35,7 @@ public enum VoteViewStyle {
         }
     }
     
-    public static func getViewConfigWithStyle(style: VoteViewStyle, lang: String) -> VoteViewConfig {
+    public static func getViewConfigWithStyle(style: VoteViewStyle, lang: CKLanguage) -> VoteViewConfig {
         switch style {
         case .fullscreen1:
             FullScreen1VoteViewConfig(lang: lang)

@@ -10,7 +10,7 @@ public struct VoteServiceConfig {
     public init(style: VoteViewStyle = .fullscreen1,
                 appId: String,
                 name: String,
-                language: String,
+                language: CKLanguage,
                 version: String) {
         self.viewConfig = VoteViewStyle.getViewConfigWithStyle(style: style, lang: language)
         self.appId = appId
@@ -20,7 +20,7 @@ public struct VoteServiceConfig {
     }
     public var appId: String
     public var name: String
-    public var language: String
+    public var language: CKLanguage
     public var version: String
     public var sdkVersion: String = voteKit_Version
     public var viewConfig: VoteViewConfig

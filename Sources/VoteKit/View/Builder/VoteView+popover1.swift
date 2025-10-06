@@ -406,7 +406,7 @@ public class VoteView_Popover1: UIView, VoteViewProtocol, RadioButtonDelegate {
 }
 
 public class Popover1VoteViewConfig: VoteViewConfig {
-    public override init(lang: String) {
+    public override init(lang: CKLanguage) {
         super.init(lang: lang)
         style = .popover1
     }

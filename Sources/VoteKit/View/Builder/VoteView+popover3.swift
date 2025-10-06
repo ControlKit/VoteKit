@@ -407,7 +407,7 @@ public class VoteView_Popover3: UIView, VoteViewProtocol, RadioButtonDelegate {
 }
 
 public class Popover3VoteViewConfig: VoteViewConfig {
-    public override init(lang: String) {
+    public override init(lang: CKLanguage) {
         super.init(lang: lang)
         style = .popover3
         buttonTitleColor = .white
