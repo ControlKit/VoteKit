@@ -39,6 +39,7 @@ public final class DefaultVoteViewModel: VoteViewModel {
         Task {
             try await setVote(
                 request: SubmitVoteRequest(
+                    itemId: self.response.data?.id,
                     appId: serviceConfig.appId,
                     voteOptionId: selectedVoteOption.id
                 )

@@ -20,6 +20,8 @@ extension Votable {
     }
     
     public func setVote(request: SubmitVoteRequest) async throws -> Result<SubmitVoteResponse>? {
+        var req = request
+        req.extraParameter = "\(request.itemId ?? "")/submit"
         return try await voteService.execute(request: request)
     }
 }
