@@ -5,6 +5,7 @@
 //  Created by Maziar Saadatfar on 9/28/25.
 //
 import UIKit
+import ControlKitBase
 protocol RadioButtonDelegate: AnyObject {
     func radioButtonTapped(vote: VoteOption)
 }

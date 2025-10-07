@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import ControlKitBase
 public protocol VoteViewProtocol: UIView {
     var delegate: VoteDelegate? { get set }
     func setIcon(color: UIColor?, image: String?, imageType: ImageType, imageView: UIImageView)

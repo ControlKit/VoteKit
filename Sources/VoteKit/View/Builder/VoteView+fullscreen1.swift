@@ -390,20 +390,3 @@ public class FullScreen1VoteViewConfig: VoteViewConfig {
         questionViewBackColor = UIColor(r: 243, g: 243, b: 243)
     }
 }
-
-
-class ImageHelper {
-    static var resolvedBundle: Bundle {
-#if SWIFT_PACKAGE
-        return Bundle.module
-#else
-        return Bundle(for: self)
-#endif
-    }
-    
-    static func image(_ name: String) -> UIImage? {
-        return UIImage(named: name,
-                       in: resolvedBundle,
-                       compatibleWith: nil)
-    }
-}
