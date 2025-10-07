@@ -37,7 +37,6 @@ extension VoteViewController: VoteDelegate {
     func submit() {
         if (viewModel.selectedVoteOption) != nil {
             viewModel.setVote()
-            viewModel.setAction(.submit)
             dismiss(animated: true)
         }
     }
