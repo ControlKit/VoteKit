@@ -18,7 +18,7 @@ public extension VoteActionable where Self: VoteViewModel {
                 action: action,
                 itemId: self.response.data?.id ?? "",
             )
-            request.extraParameter = "\(request.itemId ?? "")/\(action.rawValue)"
+            request.extraParameter = "\(request.itemId ?? "")/\(action.rawValue.lowercased())"
             let _: Result<ActionResponse> = try await voteActionService.execute(request: request)
         }
     }
