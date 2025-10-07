@@ -6,19 +6,20 @@
 //
 
 import Foundation
+import ControlKitBase
 
 public protocol Votable: AnyObject {
-    var voteService: VoteServiceProtocol { get }
-    func getVote(request: VoteRequest) async throws -> VoteResponse?
-    func setVote(request: SubmitVoteRequest) async throws -> SubmitVoteResponse?
+    var voteService: GenericServiceProtocol { get }
+    func getVote(request: VoteRequest) async throws -> Result<VoteResponse>?
+    func setVote(request: SubmitVoteRequest) async throws -> Result<SubmitVoteResponse>?
 }
 
 extension Votable {
-    public func getVote(request: VoteRequest) async throws -> VoteResponse? {
-        return try await voteService.getVote(request: request)
+    public func getVote(request: VoteRequest) async throws -> Result<VoteResponse>? {
+        return try await voteService.execute(request: request)
     }
     
-    public func setVote(request: SubmitVoteRequest) async throws -> SubmitVoteResponse? {
-        return try await voteService.setVote(request: request)
+    public func setVote(request: SubmitVoteRequest) async throws -> Result<SubmitVoteResponse>? {
+        return try await voteService.execute(request: request)
     }
 }

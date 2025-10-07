@@ -6,9 +6,7 @@
 //
 
 import Foundation
-
-public typealias VoteLocalString = [VoteLocalizedText]
-
+import ControlKitBase
 public struct VoteResponse: Codable {
     public var data: VoteModel?
 }
@@ -16,22 +14,18 @@ public struct VoteModel: Codable {
     public let id: String
     public let name: String
     public let force: Bool
-    public let title: VoteLocalString?
-    public let description: VoteLocalString?
-    public let accept_button_title: VoteLocalString?
-    public let cancel_button_title: VoteLocalString?
+    public let title: LocalString?
+    public let description: LocalString?
+    public let accept_button_title: LocalString?
+    public let cancel_button_title: LocalString?
     public let vote_options: [VoteOption]
     public let sdk_version: String?
     public let created_at: String?
 }
-public struct VoteLocalizedText: Codable {
-    public let language: String?
-    public let content: String?
-}
 
 public struct VoteOption: Codable {
     public let id: String
-    public let title: VoteLocalString?
+    public let title: LocalString?
     public let order: Int
     public let created_at: String
 }

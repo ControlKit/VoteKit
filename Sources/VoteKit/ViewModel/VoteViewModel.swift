@@ -7,10 +7,10 @@
 
 import Foundation
 import UIKit
-
+import ControlKitBase
 public protocol VoteViewModel: Votable, VoteActionable {
-    var voteActionService: ActionServiceProtocol { get set }
-    var voteService: VoteServiceProtocol { get set }
+    var voteActionService: GenericServiceProtocol { get set }
+    var voteService: GenericServiceProtocol { get set }
     var serviceConfig: VoteServiceConfig { get set }
     var response: VoteResponse { get set }
     var selectedVoteOption: VoteOption? { get set }
@@ -18,16 +18,16 @@ public protocol VoteViewModel: Votable, VoteActionable {
 }
 
 public final class DefaultVoteViewModel: VoteViewModel {
-    public var voteActionService: ActionServiceProtocol
-    public var voteService: VoteServiceProtocol
+    public var voteActionService: GenericServiceProtocol
+    public var voteService: GenericServiceProtocol
     public var response: VoteResponse
     public var selectedVoteOption: VoteOption?
     public var serviceConfig: VoteServiceConfig
     public init(
         serviceConfig: VoteServiceConfig,
         response: VoteResponse,
-        voteService: VoteServiceProtocol = VoteService(),
-        voteActionService: ActionServiceProtocol = ActionService()
+        voteService: GenericServiceProtocol = GenericService(),
+        voteActionService: GenericServiceProtocol = GenericService()
     ) {
         self.serviceConfig = serviceConfig
         self.response = response

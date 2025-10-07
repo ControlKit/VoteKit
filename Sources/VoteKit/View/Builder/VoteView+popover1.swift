@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import ControlKitBase
 
 let paddingWidth = 140.0
 let paddingHeight = 10.0

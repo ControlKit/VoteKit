@@ -14,9 +14,16 @@ let package = Package(
             targets: ["VoteKit"]
         ),
     ],
+    dependencies: [
+        .package(
+            url: "https://github.com/ControlKit/ControlKitBase.git",
+            branch: "main"
+        )
+    ],
     targets: [
         .target(
             name: "VoteKit",
+            dependencies: ["ControlKitBase"],
             resources: [.process("Resources")]
         ),
         .testTarget(

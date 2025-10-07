@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import ControlKitBase
 public struct VoteServiceConfig {
     public init(style: VoteViewStyle = .fullscreen1,
                 appId: String,

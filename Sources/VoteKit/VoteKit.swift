@@ -3,11 +3,12 @@
 import Foundation
 import UIKit
 import Combine
+import ControlKitBase
 
 public let voteKit_Version: String = "1.0.0"
 public class VoteKit: Votable {
-    public let voteService: VoteServiceProtocol
-    public init(voteService: VoteServiceProtocol = VoteService()) {
+    public let voteService: GenericServiceProtocol
+    public init(voteService: GenericServiceProtocol = GenericService()) {
         self.voteService = voteService
     }
     @MainActor
@@ -18,7 +19,7 @@ public class VoteKit: Votable {
             let request = VoteRequest(appId: config.appId,
                                       name: config.name,
                                       sdkVersion: config.sdkVersion)
-            guard let response = try await self.getVote(request: request) else {
+            guard let response = try await self.getVote(request: request)?.value else {
                 return
             }
             let viewModel = DefaultVoteViewModel(
