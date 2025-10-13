@@ -51,6 +51,56 @@ public class VoteViewConfig {
     public var closeButtonImage: UIImage?
     public var closeButtonImageColor: UIColor = UIColor(r: 253, g: 105, b: 42)
     public var contentViewAlpha: CGFloat = 1.0
+    
+    public var successMessage: String = "Thanks for Voting!"
+    public var errorMessage: String = "Failed to submit. Please try again later.\n"
+    
+    // MARK: - Alert View Configuration
+    // Container
+    public var alertContainerBackgroundColor: UIColor = .white
+    public var alertContainerCornerRadius: CGFloat = 16
+    public var alertContainerWidth: CGFloat = 300
+    public var alertContainerShadowColor: UIColor = .black
+    public var alertContainerShadowOpacity: Float = 0.2
+    public var alertContainerShadowOffset: CGSize = CGSize(width: 0, height: 4)
+    public var alertContainerShadowRadius: CGFloat = 12
+    
+    // Overlay
+    public var alertOverlayBackgroundColor: UIColor = UIColor.black.withAlphaComponent(0.5)
+    
+    // Icon
+    public var alertIconSize: CGFloat = 60
+    public var alertIconTopMargin: CGFloat = 32
+    public var alertSuccessIconName: String = "checkmark-circle-fill"
+    public var alertErrorIconName: String = "xmark-circle-fill"
+    public var alertSuccessIconColor: UIColor = .systemGreen
+    public var alertErrorIconColor: UIColor = .systemRed
+    
+    // Message
+    public var alertMessageFont: UIFont = UIFont.systemFont(ofSize: 16, weight: .regular)
+    public var alertMessageColor: UIColor = .gray
+    public var alertMessageTopMargin: CGFloat = 12
+    
+    // Button
+    public var alertButtonFont: UIFont = UIFont.systemFont(ofSize: 16, weight: .semibold)
+    public var alertButtonTitle: String = "OK"
+    public var alertButtonCornerRadius: CGFloat = 8
+    public var alertButtonHeight: CGFloat = 48
+    public var alertButtonTopMargin: CGFloat = 24
+    public var alertButtonBottomMargin: CGFloat = 24
+    public var alertSuccessButtonBackgroundColor: UIColor = .systemGreen
+    public var alertErrorButtonBackgroundColor: UIColor = .systemRed
+    public var alertButtonTitleColor: UIColor = .white
+    
+    // Spacing
+    public var alertHorizontalPadding: CGFloat = 24
+    
+    // Animation
+    public var alertFadeAnimationDuration: TimeInterval = 0.3
+    public var alertScaleAnimationDuration: TimeInterval = 0.5
+    public var alertScaleAnimationDamping: CGFloat = 0.7
+    public var alertScaleAnimationVelocity: CGFloat = 0.5
+    public var alertInitialScale: CGFloat = 0.8
 }
 
 public enum ImageType: String {

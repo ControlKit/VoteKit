@@ -14,7 +14,7 @@ public protocol VoteViewModel: Votable, VoteActionable {
     var serviceConfig: VoteServiceConfig { get set }
     var response: VoteResponse { get set }
     var selectedVoteOption: VoteOption? { get set }
-    func setVote()
+    func setVote() async throws -> Result<SubmitVoteResponse>? 
 }
 
 public final class DefaultVoteViewModel: VoteViewModel {
@@ -34,17 +34,19 @@ public final class DefaultVoteViewModel: VoteViewModel {
         self.voteService = voteService
         self.voteActionService = voteActionService
     }
-    public func setVote() {
-        guard let selectedVoteOption else { return }
-        Task {
-            try await setVote(
-                request: SubmitVoteRequest(
-                    itemId: self.response.data?.id,
-                    appId: serviceConfig.appId,
-                    voteOptionId: selectedVoteOption.id
-                )
-            )
+    public func setVote() async throws -> Result<SubmitVoteResponse>? {
+        guard let selectedVoteOption else {
+            let errorModel = NSError(domain: "No Vote Option Selected",
+                                     code: 13)
+            return Result.failure(errorModel)
         }
+        return try await setVote(
+            request: SubmitVoteRequest(
+                itemId: self.response.data?.id,
+                appId: serviceConfig.appId,
+                voteOptionId: selectedVoteOption.id
+            )
+        )
     }
 }
 
