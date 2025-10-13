@@ -420,5 +420,9 @@ public class Popover3VoteViewConfig: VoteViewConfig {
         closeButtonBorderWidth = 1.0
         popupViewBackColor = UIColor(r: 243, g: 243, b: 243)
         questionViewBackColor = .white
+        
+        alertSuccessIconColor = UIColor(r: 246, g: 80, b: 80)
+        alertErrorIconColor = .systemRed
+        alertSuccessButtonBackgroundColor = UIColor(r: 246, g: 80, b: 80)
     }
 }

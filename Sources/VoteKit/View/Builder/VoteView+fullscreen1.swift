@@ -388,5 +388,9 @@ public class FullScreen1VoteViewConfig: VoteViewConfig {
         closeButtonBorderWidth = 1.0
         popupViewBackColor = .white
         questionViewBackColor = UIColor(r: 243, g: 243, b: 243)
+        
+        alertSuccessIconColor = .black
+        alertErrorIconColor = .systemRed
+        alertSuccessButtonBackgroundColor = .black
     }
 }

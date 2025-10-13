@@ -410,5 +410,9 @@ public class Popover1VoteViewConfig: VoteViewConfig {
     public override init(lang: CKLanguage) {
         super.init(lang: lang)
         style = .popover1
+        
+        alertSuccessIconColor = UIColor(r: 253, g: 105, b: 42)
+        alertErrorIconColor = .systemRed
+        alertSuccessButtonBackgroundColor = UIColor(r: 253, g: 105, b: 42)
     }
 }
