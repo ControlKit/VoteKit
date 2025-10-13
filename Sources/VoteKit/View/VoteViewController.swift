@@ -41,7 +41,7 @@ extension VoteViewController: VoteDelegate {
                 switch result {
                 case .failure(let error):
                     DispatchQueue.main.async {
-                        self.showErrorAlert(error: error)
+                        self.showErrorAlert(error: error.localizedDescription)
                     }
                 case .success:
                     DispatchQueue.main.async {
@@ -52,7 +52,7 @@ extension VoteViewController: VoteDelegate {
                 }
             } catch {
                 DispatchQueue.main.async {
-                    self.showErrorAlert(error: error)
+                    self.showErrorAlert(error: self.config.viewConfig.errorMessage + error.localizedDescription)
                 }
             }
         }
@@ -70,11 +70,11 @@ extension VoteViewController: VoteDelegate {
         alertView.show(in: self.view)
     }
     
-    private func showErrorAlert(error: Error) {
+    private func showErrorAlert(error: String) {
         let alertView = AlertView(config: config.viewConfig)
         alertView.configure(
             type: .error,
-            message: config.viewConfig.errorMessage + error.localizedDescription,
+            message: error,
             onDismiss: nil
         )
         alertView.show(in: self.view)
