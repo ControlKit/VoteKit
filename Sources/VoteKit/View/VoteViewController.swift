@@ -43,7 +43,7 @@ extension VoteViewController: VoteDelegate {
                     DispatchQueue.main.async {
                         self.showErrorAlert(error: error.localizedDescription)
                     }
-                case .success:
+                case .success, .noContent:
                     DispatchQueue.main.async {
                         self.showSuccessAlert()
                     }
