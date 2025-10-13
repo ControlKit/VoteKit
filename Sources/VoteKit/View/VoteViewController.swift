@@ -37,9 +37,18 @@ extension VoteViewController: VoteDelegate {
     func submit() {
         Task {
             do {
-                let _ = try await viewModel.setVote()
-                DispatchQueue.main.async {
-                    self.showSuccessAlert()
+                let result = try await viewModel.setVote()
+                switch result {
+                case .failure(let error):
+                    DispatchQueue.main.async {
+                        self.showErrorAlert(error: error)
+                    }
+                case .success:
+                    DispatchQueue.main.async {
+                        self.showSuccessAlert()
+                    }
+                default:
+                    print("nothing")
                 }
             } catch {
                 DispatchQueue.main.async {
