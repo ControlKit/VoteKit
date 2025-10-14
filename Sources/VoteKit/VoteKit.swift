@@ -6,6 +6,7 @@ import Combine
 import ControlKitBase
 
 public let voteKit_Version: String = "1.0.0"
+public let latestVoteKey: String = "latestVoteKey"
 public class VoteKit: Votable {
     public let voteService: GenericServiceProtocol
     public init(voteService: GenericServiceProtocol = GenericService()) {
@@ -20,6 +21,11 @@ public class VoteKit: Votable {
                                       name: config.name,
                                       sdkVersion: config.sdkVersion)
             guard let response = try await self.getVote(request: request)?.value else {
+                return
+            }
+            
+            guard let id = response.data?.id,
+                  id > UserDefaults.standard.string(forKey: latestVoteKey) ?? String() else {
                 return
             }
             let viewModel = DefaultVoteViewModel(

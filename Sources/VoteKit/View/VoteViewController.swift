@@ -37,6 +37,7 @@ extension VoteViewController: VoteDelegate {
     func submit() {
         Task {
             do {
+                viewModel.saveLastId()
                 let result = try await viewModel.setVote()
                 switch result {
                 case .failure(let error):

@@ -8,13 +8,16 @@
 import Foundation
 import UIKit
 import ControlKitBase
-public protocol VoteViewModel: Votable, VoteActionable {
+public protocol VoteViewModel: Votable,
+                               VoteActionable,
+                               VoteSavable {
     var voteActionService: GenericServiceProtocol { get set }
     var voteService: GenericServiceProtocol { get set }
     var serviceConfig: VoteServiceConfig { get set }
     var response: VoteResponse { get set }
     var selectedVoteOption: VoteOption? { get set }
-    func setVote() async throws -> Result<SubmitVoteResponse>? 
+    func setVote() async throws -> Result<SubmitVoteResponse>?
+    func saveLastId()
 }
 
 public final class DefaultVoteViewModel: VoteViewModel {
@@ -47,6 +50,12 @@ public final class DefaultVoteViewModel: VoteViewModel {
                 voteOptionId: selectedVoteOption.id
             )
         )
+    }
+    public func saveLastId() {
+        guard let id = response.data?.id else {
+            return
+        }
+        saveLatestId(id: id)
     }
 }
 
