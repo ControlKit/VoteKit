@@ -6,10 +6,13 @@
 //
 import Foundation
 public protocol VoteSavable {
-    func saveLatestId(id: String)
+    func saveLatestId(id: String, name: String)
 }
 public extension VoteSavable {
-    func saveLatestId(id: String) {
-        UserDefaults.standard.set(id, forKey: latestVoteKey)
+    func saveLatestId(id: String, name: String) {
+        UserDefaults.standard.set(id, forKey: name)
     }
+}
+func getName(_ name: String) -> String {
+    return "CK_Vote_Name_\(name)"
 }

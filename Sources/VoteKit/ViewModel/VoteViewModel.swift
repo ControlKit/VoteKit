@@ -55,7 +55,7 @@ public final class DefaultVoteViewModel: VoteViewModel {
         guard let id = response.data?.id else {
             return
         }
-        saveLatestId(id: id)
+        saveLatestId(id: id, name: getName(serviceConfig.name))
     }
 }
 
