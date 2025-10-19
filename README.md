@@ -1,4 +1,4 @@
-# VoteKit 📊
+# VoteKit <img src='https://github.com/maziar/ReadmeFiles/blob/main/streamline-flex_politics-vote-2.svg' width='30'/>
 
 A powerful and customizable iOS voting component built with Swift that provides an elegant way to collect user feedback and votes in your iOS applications.
 
