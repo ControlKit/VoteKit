@@ -15,7 +15,7 @@ public struct VoteModel: Codable {
     public let name: String
     public let force: Bool
     public let title: LocalString?
-    public let description: LocalString?
+    public let question: LocalString?
     public let accept_button_title: LocalString?
     public let cancel_button_title: LocalString?
     public let vote_options: [VoteOption]

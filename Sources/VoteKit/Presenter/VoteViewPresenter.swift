@@ -14,7 +14,7 @@ public struct VoteViewPresenter {
         if let localTitle = data?.title,
             let title = getLocalizeString(localTitle) { self.config.title = title }
         
-        if let localDescription = data?.description,
+        if let localDescription = data?.question,
            let description = getLocalizeString(localDescription) { self.config.question = description }
         
         if let localSubmitButtonTitle = data?.accept_button_title,
