@@ -18,7 +18,8 @@ public extension VoteViewProtocol {
     func setIcon(color: UIColor?, image: String?, imageType: ImageType, imageView: UIImageView) {
         if let color = color, let image = image {
             if image.contains("http"), let url = URL(string: image) {
-                imageView.networkImage(from: url)
+                let placeholder = ImageHelper.image(imageType.rawValue)?.imageWithColor(color: color)
+                imageView.networkImage(from: url, placeHolder: placeholder)
             } else if let img = UIImage(named: image)?.imageWithColor(color: color) {
                 imageView.image = img
             } else {
@@ -28,7 +29,8 @@ public extension VoteViewProtocol {
         } else {
             if let img = image {
                 if img.contains("http"), let url = URL(string: img) {
-                    imageView.networkImage(from: url)
+                    let placeholder = ImageHelper.image(imageType.rawValue)
+                    imageView.networkImage(from: url, placeHolder: placeholder)
                 } else {
                     imageView.image = UIImage(named: img)
                 }
